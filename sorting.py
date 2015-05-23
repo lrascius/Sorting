@@ -1,7 +1,8 @@
 import math
 import random
 import unittest
-
+import matplotlib.pyplot as matplot
+import time
 
 def Swap(array, i, j):
 	temp = array[i]
@@ -134,8 +135,38 @@ def fileToArray(string):
 	return int_array
 
 
-print fileToArray('numbers.txt')
-print Quicksort(fileToArray('numbers.txt'))
+# print fileToArray('numbers.txt')
+# print Quicksort(fileToArray('numbers.txt'))
+
+def time_function(func, n):
+	'''func is the function you want to time and n is the number of times you want that function to be called'''
+	cum_sum = 0
+	for i in range(n):
+		array = [int(1000*random.random()) for i in range(1000)]
+		start = time.clock()
+		func(array)
+		end = time.clock()
+		cum_sum += (end-start)
+	return cum_sum/n 
+
+print time_function(BubbleSort, 10)
+print time_function(InsertionSort, 10)
+print time_function(SelectionSort, 10)
+print time_function(MergeSort, 10)
+print time_function(Quicksort, 10)
+
+
+
+# matplot.plot([1,2,3,4])
+# matplot.ylabel('some numbers')
+# matplot.show()
+
+# for i in range(10):
+# 	BubbleSort(array)
+# end= time.clock()
+
+# average_time = (end-start)/10
+# print average_time
 
 
 
