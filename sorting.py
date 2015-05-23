@@ -113,8 +113,34 @@ class TestSorts(unittest.TestCase):
 		for i in range(2,self.size):
 			self.assertTrue(sorted_array[i-1] <= sorted_array[i])
 
-if __name__ == '__main__':
-    unittest.main()
+def fileToArray(string):
+	file_handle = open(string, "r")
+	numbers_array = []
+	while True:
+		line = file_handle.readline()
+		numbers = line.split(',')
+		numbers_array.extend(numbers)
+		if not line:
+			break
+
+	int_array = []
+	for i in range(len(numbers_array)-1):
+		if(numbers_array[i] == "\n"):
+			continue
+			# int_array.append(numbers_array[i])
+		else:
+			int_array.append(int(numbers_array[i]))
+
+	return int_array
+
+
+print fileToArray('numbers.txt')
+print Quicksort(fileToArray('numbers.txt'))
+
+
+
+# if __name__ == '__main__':
+#     unittest.main()
 
 
 
