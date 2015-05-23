@@ -23,5 +23,14 @@ def SelectionSort(array):
 
 	return array
 
+def InsertionSort(array):
+	for i in range(1, len(array)):
+		j = i
+		while (j > 0 and array[j-1] > array[j]):
+			Swap(array, j, j-1)
+			j-=1
+	return array
+
 print BubbleSort([4, 32, 4, 43, 3, 2, 3, 1])
 print SelectionSort([4, 32, 4, 43, 3, 2, 3, 1])
+print InsertionSort([4, 32, 4, 43, 3, 2, 3, 1])
