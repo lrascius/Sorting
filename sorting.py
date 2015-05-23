@@ -1,4 +1,6 @@
 import math
+import random
+import unittest
 
 
 def Swap(array, i, j):
@@ -60,16 +62,34 @@ def MergeSort(array):
     right = MergeSort(array[len(array) / 2: len(array)])
     return Merge(left, right)
 
+def Partition(array, low, high):
+	
+	pivot_index = random.randint(low, high)
+	pivot = array[pivot_index]
+	Swap(array, pivot_index, high)
+	next_index = low
+	for i in range(low, high):
+		if array[i] <= pivot:
+			Swap(array, i, next_index)
+			next_index += 1
+	Swap(array, next_index, high)
+
+	return next_index
+
+def Quicksort(array, low, high):
+	if low < high:
+		p = Partition(array, low, high)
+		Quicksort(array, low, p-1)
+		Quicksort(array, p+1, high)
+		return array
+
+
 print BubbleSort([4, 32, 4, 43, 3, 2, 3, 1])
 print SelectionSort([4, 32, 4, 43, 3, 2, 3, 1])
 print InsertionSort([4, 32, 4, 43, 3, 2, 3, 1])
 print MergeSort([4, 32, 4, 43, 3, 2, 3, 1])
-# array = [4, 32, 4, 43, 3, 2, 3, 1]
-# array.append(1)
-# print array
+print Quicksort([4, 32, 4, 43, 3, 2, 3, 1], 0, 7)
 
-# array1 = [1,2,3,4]
-# array2 = [3,4,5,6]
-# print Merge(array1, array2)
-# print math.floor(len([4, 32, 4, 43, 3, 2, 3, 1])/ 3)
-# print (len([1, 2, 3, 4]) // 2)
+
+
+
