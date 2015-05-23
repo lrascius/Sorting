@@ -76,19 +76,45 @@ def Partition(array, low, high):
 
 	return next_index
 
-def Quicksort(array, low, high):
+def QuicksortApply(array, low, high):
 	if low < high:
 		p = Partition(array, low, high)
-		Quicksort(array, low, p-1)
-		Quicksort(array, p+1, high)
+		QuicksortApply(array, low, p-1)
+		QuicksortApply(array, p+1, high)
 		return array
 
+def Quicksort(array):
+	return QuicksortApply(array, 0, len(array) -1)
 
-print BubbleSort([4, 32, 4, 43, 3, 2, 3, 1])
-print SelectionSort([4, 32, 4, 43, 3, 2, 3, 1])
-print InsertionSort([4, 32, 4, 43, 3, 2, 3, 1])
-print MergeSort([4, 32, 4, 43, 3, 2, 3, 1])
-print Quicksort([4, 32, 4, 43, 3, 2, 3, 1], 0, 7)
+
+# Some simple unittests
+class TestSorts(unittest.TestCase):
+	def setUp(self):
+		self.size = 100
+		self.array = [int(1000*random.random()) for i in range(self.size)]
+	def test_bubblesort(self):
+		sorted_array = BubbleSort(self.array)
+		for i in range(2,self.size):
+			self.assertTrue(sorted_array[i-1] <= sorted_array[i])
+	def test_selectionsort(self):
+		sorted_array = SelectionSort(self.array)
+		for i in range(2,self.size):
+			self.assertTrue(sorted_array[i-1] <= sorted_array[i])
+	def test_insertionsort(self):
+		sorted_array = InsertionSort(self.array)
+		for i in range(2,self.size):
+			self.assertTrue(sorted_array[i-1] <= sorted_array[i])
+	def test_mergesort(self):
+		sorted_array = MergeSort(self.array)
+		for i in range(2,self.size):
+			self.assertTrue(sorted_array[i-1] <= sorted_array[i])
+	def test_quicksort(self):
+		sorted_array = Quicksort(self.array)
+		for i in range(2,self.size):
+			self.assertTrue(sorted_array[i-1] <= sorted_array[i])
+
+if __name__ == '__main__':
+    unittest.main()
 
 
 
