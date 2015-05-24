@@ -2,7 +2,14 @@ import math
 import random
 import unittest
 import matplotlib.pyplot as matplot
+import pylab 
 import time
+try:
+	# Python2
+    from Tkinter import *
+except ImportError:
+    # Python3
+    from tkinter import *
 
 def Swap(array, i, j):
 	temp = array[i]
@@ -138,27 +145,36 @@ def fileToArray(string):
 # print fileToArray('numbers.txt')
 # print Quicksort(fileToArray('numbers.txt'))
 
-def time_function(func, n):
-	'''func is the function you want to time and n is the number of times you want that function to be called'''
+def time_function(func, repeat, n):
+	'''func: is the function you want to time
+	   repeat: is the number of times you want that function to be called
+	   n: is the size of array'''
 	cum_sum = 0
-	for i in range(n):
-		array = [int(1000*random.random()) for i in range(1000)]
+	for i in range(repeat):
+		array = [int(1000*random.random()) for i in range(n)]
 		start = time.clock()
 		func(array)
 		end = time.clock()
 		cum_sum += (end-start)
-	return cum_sum/n 
+	return cum_sum/repeat
 
-print time_function(BubbleSort, 10)
-print time_function(InsertionSort, 10)
-print time_function(SelectionSort, 10)
-print time_function(MergeSort, 10)
-print time_function(Quicksort, 10)
+# x_axis_array = []
+# bubble_array = []
+
+# for i in range(100,1100,100):
+# 	x_axis_array.append(i)
+# 	bubble_array.append(time_function(BubbleSort, 10, i))
+
+# # print time_function(InsertionSort, 10, 1000)
+# # print time_function(SelectionSort, 10, 1000)
+# # print time_function(MergeSort, 10, 1000)
+# # print time_function(Quicksort, 10, 1000)
 
 
 
-# matplot.plot([1,2,3,4])
-# matplot.ylabel('some numbers')
+# matplot.plot(x_axis_array, bubble_array)
+# matplot.xlabel('size of array (n)')
+# matplot.ylabel('time (s)')
 # matplot.show()
 
 # for i in range(10):
@@ -168,10 +184,129 @@ print time_function(Quicksort, 10)
 # average_time = (end-start)/10
 # print average_time
 
+from Tkinter import *
+master = Tk()
+matplot.figure(1)
+def plot_graph():
+	x_axis_array = []
+	bubble_array = []
+	selection_array = []
+	for i in range(100,1100,100):
+		x_axis_array.append(i)	
 
+   	if bubble_checkbox.get() == 1:
+   		bubble_array = []
+		for i in range(100,1100,100):
+			bubble_array.append(time_function(BubbleSort, 10, i))
+		pylab.plot(x_axis_array, bubble_array, label='Bubble Sort')
+
+   	if selection_checkbox.get() == 1:
+   		selection_array = []
+		for i in range(100,1100,100):
+			selection_array.append(time_function(SelectionSort, 10, i)) 
+		pylab.plot(x_axis_array, selection_array, label='SelectionSort')
+
+   	if insertion_checkbox.get() == 1:
+   		insertion_array = []
+		for i in range(100,1100,100):
+			insertion_array.append(time_function(InsertionSort, 10, i))
+		pylab.plot(x_axis_array, insertion_array, label="InsertionSort")
+
+   	if mergesort_checkbox.get() == 1:
+   		mergesort_array = []
+		for i in range(100,1100,100):
+			mergesort_array.append(time_function(MergeSort, 10, i))
+		pylab.plot(x_axis_array, mergesort_array, label="MergeSort")
+
+   	if quicksort_checkbox.get() == 1:
+   		quicksort_array = []
+		for i in range(100,1100,100):
+			quicksort_array.append(time_function(Quicksort, 10, i))
+		pylab.plot(x_axis_array, quicksort_array, label='Quicksort')
+	pylab.legend(loc='upper left')
+	matplot.show()
+	# figure(1)
+	# matplot.plot(x_axis_array, bubble_array, x_axis_array, selection_array)
+	# matplot.xlabel('size of array (n)')
+	# matplot.ylabel('time (s)')
+	# matplot.show()
+
+
+
+bubble_checkbox = IntVar()
+Checkbutton(master, text="Bubble Sort", variable=bubble_checkbox).grid(row=0, sticky=W)
+selection_checkbox = IntVar()
+Checkbutton(master, text="Selection Sort", variable=selection_checkbox).grid(row=1, sticky=W)
+insertion_checkbox = IntVar()
+Checkbutton(master, text="Insertion Sort", variable=insertion_checkbox).grid(row=2, sticky=W)
+mergesort_checkbox = IntVar()
+Checkbutton(master, text="Mergesort", variable=mergesort_checkbox).grid(row=3, sticky=W)
+quicksort_checkbox = IntVar()
+Checkbutton(master, text="Quicksort", variable=quicksort_checkbox).grid(row=4, sticky=W)
+
+Button(master, text='Quit', command=master.quit).grid(row=5, sticky=W, pady=4)
+Button(master, text='Show', command=plot_graph).grid(row=6, sticky=W, pady=4)
+
+mainloop()
 
 # if __name__ == '__main__':
 #     unittest.main()
+# from tkinter import Tk, Button, Label, Entry, RIGHT, LEFT, TOP, BOTTOM
+
+# container = Tk()
+
+# num1_label = Label(container, text="Number 1:")
+# num1_label.grid(row=0, column=0)
+
+# num1_entry = Entry(container)
+# num1_entry.grid(row=0, column=1)
+
+# num2_label = Label(container, text="Number 2:")
+# num2_label.grid(row=1, column=0)
+
+# num2_entry = Entry(container)
+# num2_entry.grid(row=1, column=1)
+
+# answer_label = Label(container, text="Answer")
+# answer_label.grid(row=2, columnspan=2)
+
+# def add():
+#     num1 = float(num1_entry.get())
+#     num2 = float(num2_entry.get())
+#     answer = num1 + num2
+#     answer_label['text'] = str(answer)
+
+# def subtract():
+#     num1 = float(num1_entry.get())
+#     num2 = float(num2_entry.get())
+#     answer = num1 - num2
+#     answer_label['text'] = str(answer)
+
+# def multiply():
+#     num1 = float(num1_entry.get())
+#     num2 = float(num2_entry.get())
+#     answer = num1 * num2
+#     answer_label['text'] = str(answer)
+
+# def divide():
+#     num1 = float(num1_entry.get())
+#     num2 = float(num2_entry.get())
+#     answer = num1 / num2
+#     answer_label['text'] = str(answer)
+    
+# button = Button(container, text="ADD", command=add)
+# button.grid(row=3, columnspan=1)
+
+# button = Button(container, text="SUBTRACT", command=subtract)
+# button.grid(row=3, columnspan=2)
+
+# button = Button(container, text="MULTIPLY", command=multiply)
+# button.grid(row=4, columnspan=1)
+
+# button = Button(container, text="DIVIDE", command=divide)
+# button.grid(row=4, columnspan=2)
+# container.mainloop()
+
 
 
 
