@@ -8,7 +8,7 @@ import matplotlib.pyplot as matplot
 import pylab
 import time
 from Tkinter import *
-from tkFileDialog import askopenfilename, asksaveasfile, askopenfile
+from tkFileDialog import asksaveasfile, askopenfile
 
 
 def Swap(array, i, j):
@@ -95,29 +95,34 @@ class Sort:
         return MergeSortApply(self.array)
 
     def Quicksort(self):
-
+    	''' Quicksort works by picking a random pivot and moving the numbers
+    	    which are greater than the pivot to the right of it and the numbers 
+    	    less than the pivot to the left. It does this recursively until all
+    	    the numbers are sorted in the array'''
+        
         def Partition(array, low, high):
+        	'''Partition moves elements to the left and right of the pivot '''
+	        pivot_index = random.randint(low, high)
+	        pivot = array[pivot_index]
+	        Swap(array, pivot_index, high)
+	        next_index = low
+	        for i in range(low, high):
+	            if array[i] <= pivot:
+	                Swap(array, i, next_index)
+	                next_index += 1
+	        Swap(array, next_index, high)
 
-            pivot_index = random.randint(low, high)
-            pivot = array[pivot_index]
-            Swap(array, pivot_index, high)
-            next_index = low
-            for i in range(low, high):
-                if array[i] <= pivot:
-                    Swap(array, i, next_index)
-                    next_index += 1
-            Swap(array, next_index, high)
-
-            return next_index
+	        return next_index
 
         def QuicksortApply(array, low, high):
-            if low < high:
-                p = Partition(array, low, high)
-                QuicksortApply(array, low, p - 1)
-                QuicksortApply(array, p + 1, high)
-                return array
+        	''' Recursively sort the array using the pivot '''
+	        if low < high:
+	            p = Partition(array, low, high)
+	            QuicksortApply(array, low, p - 1)
+	            QuicksortApply(array, p + 1, high)
+	            return array
 
-        return QuicksortApply(self.array, 0, len(self.array) - 1)
+    	return QuicksortApply(self.array, 0, len(self.array) - 1)
 
     def Heapsort(self):
     	''' Heapsort works by first building a heap and then moving the
@@ -205,7 +210,7 @@ def time_function(func, repeat, n):
         	sort.CreateSortedArray(n)
     	if array_type.get() == 3:
         	sort.CreateReversedArray(n)        	
-        # Count how long it took to evaluate the function
+        # Count how long it took to evaluate the function and average the times for accuracy
         start = time.clock()
         eval(function)
         end = time.clock()
@@ -304,7 +309,7 @@ def file_save(string):
 container = Tk()
 
 # Set the general settings of the window
-container.geometry("600x550")
+container.geometry("600x400")
 container.title("Sorting Application")
 
 # Create the title and subtitles
@@ -446,6 +451,20 @@ class TestSorts(unittest.TestCase):
         for i in range(2, self.size):
             self.assertTrue(sorted_array[i - 1] <= sorted_array[i])
 
-# if __name__ == '__main__':
-#     unittest.main()
+    def test_sorted_array(self):
+        '''Unittest for sorted array'''
+        self.sort.CreateSortedArray(self.size)
+        sorted_array = self.sort.array
+        for i in range(2, self.size):
+            self.assertTrue(sorted_array[i - 1] <= sorted_array[i])
+
+    def test_reversed_array(self):
+        '''Unittest for reversed array'''
+        self.sort.CreateReversedArray(self.size)
+        reversed_array = self.sort.array
+        for i in range(2, self.size):
+            self.assertTrue(reversed_array[i - 1] >= reversed_array[i])
+
+if __name__ == '__main__':
+    unittest.main()
 
